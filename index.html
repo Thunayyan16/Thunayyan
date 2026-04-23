@@ -105,8 +105,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text1);overflow-x:
 .hero-text{display:flex;flex-direction:column;gap:1.4rem;animation:revealRight .8s .1s var(--ease) both;}
 .eyebrow{display:inline-flex;align-items:center;gap:.5rem;background:var(--olive-glow);color:var(--olive);font-size:.7rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;padding:.35rem .9rem;border-radius:50px;border:1px solid rgba(74,92,47,.2);width:fit-content;}
 .eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--olive);animation:breathe 1.5s ease-in-out infinite;}
-.hero-name{font-size:clamp(2.6rem,5.5vw,4.8rem);font-weight:900;letter-spacing:-2px;line-height:1;color:var(--text1);}
-.hero-name .green{color:var(--olive);display:block;}
+.hero-name{font-size:clamp(2rem,8vw,4.8rem);font-weight:900;letter-spacing:-1px;line-height:1.1;color:var(--text1);white-space:nowrap;}
+.hero-name .green{color:var(--olive);display:inline;}
+@media(max-width:400px){.hero-name{font-size:clamp(1.8rem,10vw,2.4rem);letter-spacing:-.5px;}}
 .tags{display:flex;flex-wrap:wrap;gap:.5rem;}
 .tag{background:var(--bg3);color:var(--olive);font-size:.75rem;font-weight:700;letter-spacing:.5px;padding:.3rem .85rem;border-radius:50px;border:1px solid var(--border);}
 .bio{font-size:clamp(.9rem,2.2vw,1rem);color:var(--text2);line-height:1.9;border-right:3px solid var(--olive);padding-right:1rem;}
@@ -312,13 +313,8 @@ body{font-family:var(--font);background:var(--bg);color:var(--text1);overflow-x:
     </div>
     <div class="hero-text">
       <span class="eyebrow"><span class="eyebrow-dot"></span>صانع محتوى · مؤثر رقمي</span>
-      <h1 class="hero-name">ثنيان<span class="green">خالد</span></h1>
-      <div class="tags">
-        <span class="tag">فلوقر 🎬</span>
-        <span class="tag">يوتيوبر</span>
-        <span class="tag">متجر TK 🛒</span>
-        <span class="tag">أفضل فلوقر 🏆</span>
-      </div>
+      <h1 class="hero-name">ثنيان <span class="green">خالد</span></h1>
+
       <p class="bio">مهتم بتوثيق اليوميات والسفر حول العالم.<br>أكثر من <strong>3 مليون مشترك</strong> على يوتيوب وأكثر من <strong>550 فلوق</strong>.<br>فائز بجائزة أفضل فلوقر 🏆</p>
       <div class="cta-row">
         <a href="#" class="btn-main" onclick="nav('advertising');return false;">📢 تعاون معي</a>
