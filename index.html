@@ -589,12 +589,35 @@ if(statsEl) {
 
 // Contact form
 function submitForm() {
-  var name = document.getElementById('fName').value.trim();
+  var name  = document.getElementById('fName').value.trim();
   var phone = document.getElementById('fPhone').value.trim();
-  if(!name || !phone) {
+  var email = document.getElementById('fEmail').value.trim();
+  var type  = document.getElementById('fType').value.trim();
+  var msg   = document.getElementById('fMsg').value.trim();
+
+  if (!name || !phone) {
     alert('يرجى إدخال الاسم ورقم التواصل على الأقل');
     return;
   }
+
+  var text = '';
+  text += 'مرحباً ثنيان 👋\n';
+  text += 'لدي طلب تعاون إعلاني:\n\n';
+  text += '🏢 الشركة / المسؤول: ' + name + '\n';
+  text += '📞 رقم التواصل: ' + phone + '\n';
+  if (email) text += '📧 البريد: ' + email + '\n';
+  if (type)  text += '📋 نوع الإعلان: ' + type + '\n';
+  if (msg)   text += '📝 التفاصيل: ' + msg + '\n';
+
+  var waURL = 'https://wa.me/966566334500?text=' + encodeURIComponent(text);
+  var a = document.createElement('a');
+  a.href = waURL;
+  a.target = '_blank';
+  a.rel = 'noopener';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+
   document.getElementById('contactForm').style.display = 'none';
   document.getElementById('formSuccess').style.display = 'block';
 }
