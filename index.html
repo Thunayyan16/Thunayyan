@@ -6,6 +6,9 @@
 <meta name="description" content="ثنيان خالد — صانع محتوى وفلوقر سعودي. 3 مليون مشترك يوتيوب، 2 مليون انستقرام.">
 <meta name="keywords" content="ثنيان خالد, فلوقر سعودي, يوتيوبر, صانع محتوى, اعلانات">
 <title>ثنيان خالد | صانع محتوى</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 @font-face {
   font-family: 'ThmanyahSans';
@@ -50,7 +53,8 @@ html{scroll-behavior:smooth;-webkit-text-size-adjust:100%;}
   --shadow-sm:0 2px 12px rgba(74,92,47,0.08);
   --shadow-md:0 8px 32px rgba(74,92,47,0.13);
   --shadow-lg:0 20px 60px rgba(74,92,47,0.18);
-  --font:'ThmanyahSans',sans-serif;
+  --font:'Cairo','ThmanyahSans',sans-serif;
+  --font-display:'ThmanyahSans','Cairo',sans-serif;
   --ease:cubic-bezier(0.22,1,0.36,1);
 }
 [data-theme="dark"]{
@@ -79,6 +83,9 @@ body{font-family:var(--font);background:var(--bg);color:var(--text1);overflow-x:
 .theme-btn{width:42px;height:24px;border-radius:50px;background:var(--bg3);border:1.5px solid var(--border);cursor:pointer;position:relative;transition:background .3s;flex-shrink:0;}
 .theme-btn::after{content:'';position:absolute;top:2px;right:2px;width:17px;height:17px;border-radius:50%;background:var(--olive);transition:transform .3s var(--ease);}
 [data-theme="dark"] .theme-btn::after{transform:translateX(-18px);}
+
+.lang-btn{background:var(--bg3);border:1.5px solid var(--border);color:var(--olive);font-family:var(--font);font-size:.78rem;font-weight:800;padding:.3rem .7rem;border-radius:50px;cursor:pointer;transition:all .25s;letter-spacing:.5px;flex-shrink:0;}
+.lang-btn:hover{background:var(--olive);color:#fff;border-color:var(--olive);}
 .ham-btn{display:none;flex-direction:column;gap:4.5px;background:none;border:none;cursor:pointer;padding:4px;}
 .ham-btn span{width:20px;height:2px;background:var(--olive);border-radius:2px;display:block;transition:.3s;}
 
@@ -105,7 +112,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text1);overflow-x:
 .hero-text{display:flex;flex-direction:column;gap:1.4rem;animation:revealRight .8s .1s var(--ease) both;}
 .eyebrow{display:inline-flex;align-items:center;gap:.5rem;background:var(--olive-glow);color:var(--olive);font-size:.7rem;font-weight:800;letter-spacing:3px;text-transform:uppercase;padding:.35rem .9rem;border-radius:50px;border:1px solid rgba(74,92,47,.2);width:fit-content;}
 .eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--olive);animation:breathe 1.5s ease-in-out infinite;}
-.hero-name{font-size:clamp(2rem,8vw,4.8rem);font-weight:900;letter-spacing:-1px;line-height:1.1;color:var(--text1);white-space:nowrap;}
+.hero-name{font-size:clamp(2rem,8vw,4.8rem);font-weight:900;letter-spacing:-1px;line-height:1.1;color:var(--text1);white-space:nowrap;font-family:var(--font-display);}
 .hero-name .green{color:var(--olive);display:inline;}
 @media(max-width:400px){.hero-name{font-size:clamp(1.8rem,10vw,2.4rem);letter-spacing:-.5px;}}
 .tags{display:flex;flex-wrap:wrap;gap:.5rem;}
@@ -287,6 +294,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text1);overflow-x:
   </ul>
   <div class="nav-end">
     <button class="theme-btn" onclick="toggleTheme()" aria-label="تبديل المظهر"></button>
+    <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
     <button class="ham-btn" id="hamBtn" onclick="toggleDrawer()" aria-label="القائمة">
       <span></span><span></span><span></span>
     </button>
@@ -299,6 +307,7 @@ body{font-family:var(--font);background:var(--bg);color:var(--text1);overflow-x:
   <a href="#" onclick="nav('advertising');return false;" id="dl-advertising">📢 للإعلانات</a>
   <a href="#" onclick="nav('achievements');return false;" id="dl-achievements">🏆 الإنجازات</a>
   <a href="#" onclick="nav('stats');return false;" id="dl-stats">📊 الإحصائيات</a>
+  <a href="#" onclick="toggleLang();return false;" id="dl-lang" style="color:var(--olive);font-weight:800;">🌐 English</a>
 </div>
 
 <!-- HOME -->
@@ -617,6 +626,235 @@ function submitForm() {
   document.getElementById('contactForm').style.display = 'none';
   document.getElementById('formSuccess').style.display = 'block';
 }
+
+
+// ===== LANGUAGE =====
+var currentLang = localStorage.getItem('lang') || 'ar';
+
+var T = {
+  ar: {
+    dir: 'rtl', lang: 'ar',
+    navLogo: '• ثنيان خالد',
+    navHome: 'الرئيسية',
+    navAds: 'للإعلانات',
+    navAch: 'الإنجازات',
+    navStats: 'الإحصائيات',
+    langBtn: 'EN',
+    eyebrow: 'صانع محتوى · مؤثر رقمي',
+    heroBio: 'مهتم بتوثيق اليوميات والسفر حول العالم.<br>أكثر من <strong>3 مليون مشترك</strong> على يوتيوب وأكثر من <strong>550 فلوق</strong>.<br>فائز بجائزة أفضل فلوقر 🏆',
+    btnCollab: '📢 تعاون معي',
+    btnStore: '🛒 متجري',
+    followLabel: 'تابعني على',
+    waLbl: 'للأعمال والإعلانات',
+    waBtn: 'تواصل الآن ←',
+    galleryLabel: 'لحظات من باريس 🗼',
+    pillLabel: 'يوتيوب',
+    // Advertising
+    adsTag: 'شراكات تجارية',
+    adsTitle: 'صفحة <span>الإعلانات</span>',
+    adsSub: 'تواصل مع جمهور عربي واسع من خلال محتوى أصيل وموثوق',
+    shc1l:'مشترك', shc2l:'متابع', shc3l:'متابع', shc4l:'عبر المنصات', shc5l:'فلوق منشور', shc6l:'أفضل فلوقر',
+    svcTitle: 'خدمات <span>الإعلانات</span>',
+    svc1t:'Dedicated Video', svc1d:'فيديو يوتيوب مخصص كامل لعلامتك التجارية مع تقديم احترافي وإنتاج عالي الجودة.', svc1b:'⭐ الأكثر طلباً',
+    svc2t:'Integration', svc2d:'دمج إعلانك ضمن الفيديو بشكل طبيعي وسلس يتناسب مع محتوى الفلوق.', svc2b:'🔥 تفاعل عالي',
+    svc3t:'Social Media Post', svc3d:'منشور إعلاني على إنستقرام أو X أو سناب شات يصل لملايين المتابعين.', svc3b:'⚡ وصول سريع',
+    svc4t:'Kick Live Stream', svc4d:'ذكر وترويج علامتك خلال البث المباشر مع التفاعل الحي مع الجمهور.', svc4b:'🎯 تفاعل حي',
+    svc5t:'Full Package', svc5d:'باقة شاملة تغطي جميع المنصات لضمان أقصى انتشار لحملتك الإعلانية.', svc5b:'💎 قيمة مضافة',
+    svc6t:'Product Review', svc6d:'مراجعة صادقة لمنتجك أو خدمتك بأسلوب قصصي يبني ثقة الجمهور.', svc6b:'✅ موثوق',
+    formTitle: 'نموذج <span>التواصل</span>',
+    formH3: 'أرسل طلب التعاون',
+    formP: 'سيتم التواصل معك خلال 24 ساعة على الرقم أو البريد الإلكتروني المدخل.',
+    lbl1:'اسم الشركة / المسؤول', ph1:'مثال: شركة الرياض للتقنية',
+    lbl2:'رقم التواصل', ph2:'+966 5X XXX XXXX',
+    lbl3:'البريد الإلكتروني', ph3:'info@company.com',
+    lbl4:'نوع الإعلان',
+    opt0:'اختر الخدمة', opt1:'Dedicated Video', opt2:'Integration', opt3:'منشور سوشيال ميديا', opt4:'بث مباشر Kick', opt5:'حزمة متكاملة', opt6:'ريفيو منتج',
+    lbl5:'تفاصيل الطلب', ph5:'اكتب تفاصيل المنتج أو الخدمة...',
+    submitBtn: '📤 إرسال الطلب',
+    successMsg: '✅ تم إرسال طلبك بنجاح!',
+    successSub: 'سيتم التواصل معك خلال 24 ساعة',
+    waLbl2: 'أو تواصل مباشرة عبر واتساب', waBtn2: 'واتساب الآن ←',
+    // Achievements
+    achTag:'المسيرة', achTitle:'الإنجازات <span>والجوائز</span>', achSub:'محطات مضيئة في رحلتي الرقمية',
+    a1t:'جائزة أفضل فلوقر', a1d:'فائز بجائزة أفضل فلوقر في المملكة العربية السعودية تكريماً لمسيرة إبداعية في توثيق اليوميات.', a1b:'⭐ جائزة رسمية',
+    a2t:'3 مليون مشترك يوتيوب', a2d:'تجاوز حاجز الـ ٣ مليون مشترك مع أكثر من ٥٥٠ فلوق منشور.', a2b:'🚀 إنجاز كبير',
+    a3t:'2 مليون متابع إنستقرام', a3d:'بناء مجتمع ضخم يتجاوز الـ ٢ مليون متابع على إنستقرام.', a3b:'💎 مؤثر كبير',
+    a4t:'348K+ متابع تيك توك', a4d:'انتشار واسع على تيك توك بمحتوى يلامس الجمهور العربي مع 3.3M إعجاب.', a4b:'🎯 نمو متسارع',
+    a5t:'إطلاق متجر TK', a5d:'إطلاق متجر toun16.com الإلكتروني الناجح الذي يخدم آلاف العملاء.', a5b:'💼 ريادة أعمال',
+    a6t:'توثيق السفر حول العالم', a6d:'فلوقات من باريس، أمريكا، وأماكن حول العالم جذبت ملايين المشاهدات.', a6b:'🌍 مسافر',
+    // Stats
+    statsTag:'الأرقام الحقيقية', statsTitle:'الإحصائيات <span>الحية</span>', statsSub:'أرقام محدّثة من حساباتي الرسمية — أبريل 2026',
+    sc1l:'مشترك', sc2l:'متابع', sc3l:'متابع', sc4l:'متابع', sc5l:'متابع', sc6l:'متابع',
+    sc1c:'↑ 550+ فلوق', sc2c:'↑ 1,021 منشور', sc3c:'↑ 3.3M إعجاب', sc4c:'↑ نشط يومياً', sc5c:'↑ نشط', sc6c:'↑ بث مباشر',
+    noteStr: '<strong>ملاحظة:</strong> أرقام يوتيوب وإنستقرام وتيك توك مستخرجة من الحسابات الرسمية. باقي الأرقام تقديرية.',
+    refreshBtn: 'تحديث',
+    // Drawer
+    dlHome:'🏠 الرئيسية', dlAds:'📢 للإعلانات', dlAch:'🏆 الإنجازات', dlStats:'📊 الإحصائيات', dlLang:'🌐 English'
+  },
+  en: {
+    dir: 'ltr', lang: 'en',
+    navLogo: '• Thunayyan Khalid',
+    navHome: 'Home',
+    navAds: 'Advertising',
+    navAch: 'Achievements',
+    navStats: 'Stats',
+    langBtn: 'عربي',
+    eyebrow: 'Content Creator · Digital Influencer',
+    heroBio: 'Passionate about documenting daily life and traveling the world.<br>Over <strong>3 Million subscribers</strong> on YouTube and more than <strong>550 vlogs</strong>.<br>Winner of Best Vlogger Award 🏆',
+    btnCollab: '📢 Collaborate',
+    btnStore: '🛒 My Store',
+    followLabel: 'Follow me on',
+    waLbl: 'For Business & Advertising',
+    waBtn: 'Contact Now →',
+    galleryLabel: 'Moments from Paris 🗼',
+    pillLabel: 'YouTube',
+    // Advertising
+    adsTag: 'Business Partnerships',
+    adsTitle: 'Advertising <span>Page</span>',
+    adsSub: 'Reach a wide Arabic audience through authentic and trusted content',
+    shc1l:'Subscribers', shc2l:'Followers', shc3l:'Followers', shc4l:'Across Platforms', shc5l:'Vlogs Published', shc6l:'Best Vlogger',
+    svcTitle: 'Advertising <span>Services</span>',
+    svc1t:'Dedicated Video', svc1d:'A full YouTube video dedicated to your brand with professional presentation and high-quality production.', svc1b:'⭐ Most Popular',
+    svc2t:'Integration', svc2d:'Naturally integrate your ad within the video in a seamless way that fits the vlog content.', svc2b:'🔥 High Engagement',
+    svc3t:'Social Media Post', svc3d:'An advertising post on Instagram, X, or Snapchat reaching millions of followers.', svc3b:'⚡ Fast Reach',
+    svc4t:'Kick Live Stream', svc4d:'Mention and promote your brand during live streaming with real-time audience interaction.', svc4b:'🎯 Live Engagement',
+    svc5t:'Full Package', svc5d:'A comprehensive package covering all platforms to ensure maximum reach for your campaign.', svc5b:'💎 Added Value',
+    svc6t:'Product Review', svc6d:'An honest review of your product or service in a storytelling style that builds audience trust.', svc6b:'✅ Trusted',
+    formTitle: 'Contact <span>Form</span>',
+    formH3: 'Send a Collaboration Request',
+    formP: 'We will contact you within 24 hours via phone or email provided.',
+    lbl1:'Company / Contact Name', ph1:'e.g. Riyadh Tech Company',
+    lbl2:'Phone Number', ph2:'+966 5X XXX XXXX',
+    lbl3:'Email Address', ph3:'info@company.com',
+    lbl4:'Ad Type',
+    opt0:'Select Service', opt1:'Dedicated Video', opt2:'Integration', opt3:'Social Media Post', opt4:'Kick Live Stream', opt5:'Full Package', opt6:'Product Review',
+    lbl5:'Request Details', ph5:'Describe your product or service and campaign goals...',
+    submitBtn: '📤 Send Request',
+    successMsg: '✅ Request Sent Successfully!',
+    successSub: 'We will contact you within 24 hours',
+    waLbl2: 'Or contact directly via WhatsApp', waBtn2: 'WhatsApp Now →',
+    // Achievements
+    achTag:'Journey', achTitle:'Achievements <span>& Awards</span>', achSub:'Highlights from my digital journey',
+    a1t:'Best Vlogger Award', a1d:'Winner of the Best Vlogger Award in Saudi Arabia, recognizing a creative journey in documenting daily life.', a1b:'⭐ Official Award',
+    a2t:'3M YouTube Subscribers', a2d:'Surpassed 3 million subscribers with more than 550 published vlogs.', a2b:'🚀 Major Achievement',
+    a3t:'2M Instagram Followers', a3d:'Built a massive community of over 2 million followers on Instagram.', a3b:'💎 Top Influencer',
+    a4t:'348K+ TikTok Followers', a4d:'Wide reach on TikTok with content resonating with Arabic audiences and 3.3M likes.', a4b:'🎯 Fast Growth',
+    a5t:'TK Store Launch', a5d:'Launched the successful toun16.com e-commerce store serving thousands of customers.', a5b:'💼 Entrepreneurship',
+    a6t:'World Travel Documentation', a6d:'Vlogs from Paris, America, and destinations around the world attracting millions of views.', a6b:'🌍 Traveler',
+    // Stats
+    statsTag:'Real Numbers', statsTitle:'Live <span>Statistics</span>', statsSub:'Updated figures from my official accounts — April 2026',
+    sc1l:'Subscribers', sc2l:'Followers', sc3l:'Followers', sc4l:'Followers', sc5l:'Followers', sc6l:'Followers',
+    sc1c:'↑ 550+ vlogs', sc2c:'↑ 1,021 posts', sc3c:'↑ 3.3M likes', sc4c:'↑ Daily active', sc5c:'↑ Active', sc6c:'↑ Live streaming',
+    noteStr: '<strong>Note:</strong> YouTube, Instagram, and TikTok figures are extracted from official accounts. Other numbers are estimates.',
+    refreshBtn: 'Refresh',
+    // Drawer
+    dlHome:'🏠 Home', dlAds:'📢 Advertising', dlAch:'🏆 Achievements', dlStats:'📊 Statistics', dlLang:'🌐 عربي'
+  }
+};
+
+function applyLang(lang) {
+  var t = T[lang];
+  var html = document.documentElement;
+  html.setAttribute('dir', t.dir);
+  html.setAttribute('lang', t.lang);
+
+  // Nav
+  document.querySelector('.nav-logo').innerHTML = '<span class="nav-dot"></span>' + t.navLogo;
+  document.getElementById('nl-home').textContent = t.navHome;
+  document.getElementById('nl-advertising').textContent = t.navAds;
+  document.getElementById('nl-achievements').textContent = t.navAch;
+  document.getElementById('nl-stats').textContent = t.navStats;
+  document.getElementById('langBtn').textContent = t.langBtn;
+
+  // Drawer
+  document.getElementById('dl-home').textContent = t.dlHome;
+  document.getElementById('dl-advertising').textContent = t.dlAds;
+  document.getElementById('dl-achievements').textContent = t.dlAch;
+  document.getElementById('dl-stats').textContent = t.dlStats;
+  document.getElementById('dl-lang').textContent = t.dlLang;
+
+  // Hero
+  document.querySelector('.eyebrow').innerHTML = '<span class="eyebrow-dot"></span>' + t.eyebrow;
+  document.querySelector('.bio').innerHTML = t.heroBio;
+  document.querySelector('.btn-main').innerHTML = t.btnCollab;
+  document.querySelector('.btn-ghost').innerHTML = t.btnStore;
+  document.querySelector('.social-label').textContent = t.followLabel;
+  document.querySelector('.photo-pill').innerHTML = '<b>3M+</b>' + t.pillLabel;
+
+  // WA home
+  var waBars = document.querySelectorAll('.wa-lbl');
+  var waPills = document.querySelectorAll('.wa-pill');
+  if(waBars[0]) waBars[0].textContent = t.waLbl;
+  if(waPills[0]) waPills[0].textContent = t.waBtn;
+  if(waBars[1]) waBars[1].textContent = t.waLbl2;
+  if(waPills[1]) waPills[1].textContent = t.waBtn2;
+
+  // Gallery
+  document.querySelector('.section-label').textContent = t.galleryLabel;
+
+  // Advertising page
+  document.querySelector('#advertising .ph-tag').textContent = t.adsTag;
+  document.querySelector('#advertising .ph-title').innerHTML = t.adsTitle;
+  document.querySelector('#advertising .ph-sub').textContent = t.adsSub;
+
+  // Stats hero cards
+  var shcL = document.querySelectorAll('.shc-l');
+  [t.shc1l,t.shc2l,t.shc3l,t.shc4l,t.shc5l,t.shc6l].forEach(function(v,i){ if(shcL[i]) shcL[i].textContent = v; });
+
+  // Services
+  document.querySelector('#advertising .ph-title:last-of-type') && (document.querySelectorAll('#advertising .ph-title')[1].innerHTML = t.svcTitle);
+  var svcs = document.querySelectorAll('.svc');
+  var svcData = [[t.svc1t,t.svc1d,t.svc1b],[t.svc2t,t.svc2d,t.svc2b],[t.svc3t,t.svc3d,t.svc3b],[t.svc4t,t.svc4d,t.svc4b],[t.svc5t,t.svc5d,t.svc5b],[t.svc6t,t.svc6d,t.svc6b]];
+  svcs.forEach(function(el,i){ if(svcData[i]){ el.querySelector('.svc-t').textContent=svcData[i][0]; el.querySelector('.svc-d').textContent=svcData[i][1]; el.querySelector('.svc-b').textContent=svcData[i][2]; }});
+
+  // Form
+  document.querySelectorAll('#advertising .ph-title')[2] && (document.querySelectorAll('#advertising .ph-title')[2].innerHTML = t.formTitle);
+  document.querySelector('.contact-box h3').textContent = t.formH3;
+  document.querySelector('.contact-box > p').textContent = t.formP;
+  var labels = document.querySelectorAll('.form-group label');
+  var inputs = document.querySelectorAll('.form-group input, .form-group textarea');
+  if(labels[0]) labels[0].textContent = t.lbl1;
+  if(labels[1]) labels[1].textContent = t.lbl2;
+  if(labels[2]) labels[2].textContent = t.lbl3;
+  if(labels[3]) labels[3].textContent = t.lbl4;
+  if(labels[4]) labels[4].textContent = t.lbl5;
+  if(inputs[0]) inputs[0].placeholder = t.ph1;
+  if(inputs[1]) inputs[1].placeholder = t.ph2;
+  if(inputs[2]) inputs[2].placeholder = t.ph3;
+  if(inputs[3]) inputs[3].placeholder = t.ph5;
+  var opts = document.querySelectorAll('#fType option');
+  [t.opt0,t.opt1,t.opt2,t.opt3,t.opt4,t.opt5,t.opt6].forEach(function(v,i){ if(opts[i]) opts[i].textContent = v; });
+  document.querySelector('.form-submit').innerHTML = t.submitBtn;
+  document.querySelector('#formSuccess').innerHTML = t.successMsg + '<br><span style="font-size:.9rem;font-weight:400;color:var(--text3)">' + t.successSub + '</span>';
+
+  // Achievements
+  document.querySelector('#achievements .ph-tag').textContent = t.achTag;
+  document.querySelector('#achievements .ph-title').innerHTML = t.achTitle;
+  document.querySelector('#achievements .ph-sub').textContent = t.achSub;
+  var achCards = document.querySelectorAll('.ach-card');
+  var achData = [[t.a1t,t.a1d,t.a1b],[t.a2t,t.a2d,t.a2b],[t.a3t,t.a3d,t.a3b],[t.a4t,t.a4d,t.a4b],[t.a5t,t.a5d,t.a5b],[t.a6t,t.a6d,t.a6b]];
+  achCards.forEach(function(c,i){ if(achData[i]){ c.querySelector('.ach-title').textContent=achData[i][0]; c.querySelector('.ach-desc').textContent=achData[i][1]; c.querySelector('.ach-badge').textContent=achData[i][2]; }});
+
+  // Stats
+  document.querySelector('#stats .ph-tag').textContent = t.statsTag;
+  document.querySelector('#stats .ph-title').innerHTML = t.statsTitle;
+  document.querySelector('#stats .ph-sub').textContent = t.statsSub;
+  var scLbls = document.querySelectorAll('.sc-lbl');
+  var scChgs = document.querySelectorAll('.sc-chg');
+  [t.sc1l,t.sc2l,t.sc3l,t.sc4l,t.sc5l,t.sc6l].forEach(function(v,i){ if(scLbls[i]) scLbls[i].textContent=v; });
+  [t.sc1c,t.sc2c,t.sc3c,t.sc4c,t.sc5c,t.sc6c].forEach(function(v,i){ if(scChgs[i]) scChgs[i].textContent=v; });
+  document.querySelector('.sn-txt').innerHTML = t.noteStr;
+  document.querySelector('.refresh-btn').innerHTML = '<svg id="rIco" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg> ' + t.refreshBtn;
+}
+
+function toggleLang() {
+  currentLang = currentLang === 'ar' ? 'en' : 'ar';
+  localStorage.setItem('lang', currentLang);
+  applyLang(currentLang);
+}
+
+// Apply saved language on load
+applyLang(currentLang);
 
 </script>
 </body>
